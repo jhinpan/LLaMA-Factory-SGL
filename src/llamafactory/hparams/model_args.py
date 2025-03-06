@@ -157,7 +157,27 @@ class VllmArguments:
 
 
 @dataclass
-class ModelArguments(QuantizationArguments, ProcessorArguments, ExportArguments, VllmArguments):
+class SGLangArguments:
+    r"""
+    Arguments pertaining to the SGLang worker.
+    """
+
+    sglang_maxlen: int = field(
+        default=8192,
+        metadata={"help": "Maximum sequence (prompt + response) length of the SGLang engine."},
+    )
+    sglang_gpu_util: float = field(
+        default=0.9,
+        metadata={"help": "The fraction of GPU memory in (0,1) to be used for the SGLang engine."},
+    )
+    sglang_config: Optional[Union[dict, str]] = field(
+        default=None,
+        metadata={"help": "Config to initialize the SGLang engine. Please use JSON strings."},
+    )
+
+
+@dataclass
+class ModelArguments(QuantizationArguments, ProcessorArguments, ExportArguments, VllmArguments, SGLangArguments):
     r"""
     Arguments pertaining to which model/config/tokenizer we are going to fine-tune or infer.
     """
@@ -261,7 +281,7 @@ class ModelArguments(QuantizationArguments, ProcessorArguments, ExportArguments,
         default=False,
         metadata={"help": "Whether or not to randomly initialize the model weights."},
     )
-    infer_backend: Literal["huggingface", "vllm"] = field(
+    infer_backend: Literal["huggingface", "vllm", "sglang"] = field(
         default="huggingface",
         metadata={"help": "Backend engine used at inference."},
     )
