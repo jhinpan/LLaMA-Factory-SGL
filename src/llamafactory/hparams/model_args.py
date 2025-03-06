@@ -166,9 +166,13 @@ class SGLangArguments:
         default=8192,
         metadata={"help": "Maximum sequence (prompt + response) length of the SGLang engine."},
     )
-    sglang_gpu_util: float = field(
+    sglang_mem_fraction: float = field(
         default=0.9,
-        metadata={"help": "The fraction of GPU memory in (0,1) to be used for the SGLang engine."},
+        metadata={"help": "The memory fraction (0-1) to be used for the SGLang engine."},
+    )
+    sglang_tp_size: int = field(
+        default=1,
+        metadata={"help": "Tensor parallel size for the SGLang engine."},
     )
     sglang_config: Optional[Union[dict, str]] = field(
         default=None,
